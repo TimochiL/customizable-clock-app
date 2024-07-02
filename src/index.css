@@ -57,14 +57,28 @@ body {
     font-size: 18px;
     letter-spacing: 0.1rem;
 }
+
+.navbar .icon-buttons a {
+    color: inherit;
+}
+.navbar .icon-buttons .portfolio-button,
 .navbar .icon-buttons .linkedin-button,
 .navbar .icon-buttons .github-button,
-.navbar .icon-buttons .help-button,
+.navbar .icon-buttons .help-button {
+    cursor: pointer;
+
+    transition: 0.2s ease-in-out;
+}
 .navbar .icon-buttons .settings-button,
 .navbar .icon-buttons .theme-button {
     cursor: pointer;
 
     transition: 1s ease-in-out;
+}
+.navbar .icon-buttons .github-button:hover,
+.navbar .icon-buttons .linkedin-button:hover,
+.navbar .icon-buttons .portfolio-button:hover {
+    transform: translateY(-3px);
 }
 .navbar .icon-buttons .help-button:hover {
     transform: rotate(30deg) scale(1.1);

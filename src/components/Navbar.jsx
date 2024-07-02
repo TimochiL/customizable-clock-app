@@ -59,9 +59,13 @@ const Navbar = ({settingsUpdateToApp, data}) => {
             <div className='navbar'>
                 <IconContext.Provider value={{ size: 24 }}>
                     <div className='icon-buttons'>
-                        <TbSquareRoundedLetterT />
-                        <FaLinkedin className='linkedin-button'/>
-                        <FaGithub className='github-button'/>
+                        <TbSquareRoundedLetterT className='portfolio-button'/>
+                        <a href='https://www.linkedin.com/' target='_blank'>
+                            <FaLinkedin className='linkedin-button'/>
+                        </a>
+                        <a href='https://github.com/TimochiL/customizable-clock-app/' target='_blank'>
+                            <FaGithub className='github-button'/>
+                        </a>
                     </div>
                 </IconContext.Provider>
                 <span className='title'>
