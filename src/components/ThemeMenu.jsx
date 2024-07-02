@@ -41,7 +41,6 @@ const ThemeMenu = ({ displayState }) => {
         let offset = 60;
         let limit = 255;
 
-        // const isDarkColor = (r + b + g) > 381;
         const isDarkColor = r < 127 && b < 127 && g < 127 || !getRGB(backgroundColor).every((value) => value < 127);
         
         const minOrMax = (first, second, idc=isDarkColor) => {

@@ -1,14 +1,3 @@
-:root {
-    --ui-background-color: #ffffff33;
-    --nav-hue: 0;
-    --nav-saturation: 20%;
-    --nav-lightness: 75%;
-    --nav-alpha: 0.2;
-
-    --menu-offset-lightness: 25%;
-    --menu-offset-alpha: 0.45;
-}
-
 body {
     backdrop-filter: blur(5px);
     background-image: none;
@@ -55,7 +44,7 @@ body {
     min-width: 100vw;
 
     border-bottom: 2px solid #ffffff70;
-    background-color: var(--ui-background-color);
+    background-color: #ffffff33;
     text-align: center;
 }
 .navbar .icon-buttons {
@@ -196,8 +185,6 @@ body {
     background-color: #aaaaaa70;
     border: 2px solid #aaaaaaad;
 }
-
-
 
 .clock-container {
 

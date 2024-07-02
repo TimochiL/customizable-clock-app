@@ -92,8 +92,6 @@ const Navbar = ({settingsUpdateToApp, data}) => {
                 }
                 {
                 settingsIsToggled
-                    // ? <SettingsMenu className='settings-menu--active' settingsUpdateToNav={settingsUpdateToNav} data={data} />
-                    // : <SettingsMenu className='settings-menu--inactive' settingsUpdateToNav={settingsUpdateToNav} data={data} />
                     ? <SettingsMenu
                         displayState='active'
                         settingsUpdateToNav={settingsUpdateToNav}

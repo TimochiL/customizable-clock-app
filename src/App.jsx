@@ -25,8 +25,7 @@ function App() {
             <Clock
                 clockPosition={data.clockPosition}
                 timeFormatSettings={data.timeFormatSettings}
-            />
-            
+            />  
         </>
     )
 }
