@@ -31,3 +31,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - Menu background colors and border colors are calculated from the RGB values of the UI hex color selected by the app user.
     - Color previews are provided above each color input with an included hex color corresponding to the selected background or UI color.
 - App component passes a callback function as a property to get updated JavaScript Object data from child components Navbar and SettingMenu and pass updated time format and position values to child component Clock.
+
+[0.0.1]: https://github.com/TimochiL/cuztomizable-clock-app/releases/tag/v0.0.1
