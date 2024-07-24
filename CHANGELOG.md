@@ -7,11 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.0] - 2024-07-24
+
 ### Added
 
 - LinkedIn icon button functionality; link LinkedIn button to LinkedIn homepage
 - Github icon button functionality; link Github button to repo page
 - LinkedIn and Github icon button animations
+- Background blur slider to theme menu
 
 ### Changed
 
@@ -44,5 +47,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - Color previews are provided above each color input with an included hex color corresponding to the selected background or UI color.
 - App component passes a callback function as a property to get updated JavaScript Object data from child components Navbar and SettingMenu and pass updated time format and position values to child component Clock.
 
-[unreleased]: https://github.com/TimochiL/cuztomizable-clock-app/compare/v0.0.1...HEAD
-[0.0.1]: https://github.com/TimochiL/cuztomizable-clock-app/releases/tag/v0.0.1
+[unreleased]: https://github.com/TimochiL/customizable-clock-app/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/TimochiL/customizable-clock-app/compare/v0.0.1...v1.0.0
+[0.0.1]: https://github.com/TimochiL/customizable-clock-app/releases/tag/v0.0.1

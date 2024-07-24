@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable react/prop-types */
 import React, { useState, useEffect } from 'react';
 import { IconContext } from 'react-icons';
 import { IoSettings } from 'react-icons/io5';
@@ -60,7 +62,7 @@ const Navbar = ({settingsUpdateToApp, data}) => {
                 <IconContext.Provider value={{ size: 24 }}>
                     <div className='icon-buttons'>
                         <TbSquareRoundedLetterT className='portfolio-button'/>
-                        <a href='https://www.linkedin.com/' target='_blank'>
+                        <a href='https://www.linkedin.com/in/timothy-liu-484b52316/' target='_blank'>
                             <FaLinkedin className='linkedin-button'/>
                         </a>
                         <a href='https://github.com/TimochiL/customizable-clock-app/' target='_blank'>

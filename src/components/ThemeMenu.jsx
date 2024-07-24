@@ -1,19 +1,22 @@
-import React, { useState, useEffect } from 'react'
+/* eslint-disable react/prop-types */
+import React, { useState } from 'react'
 
 const ThemeMenu = ({ displayState }) => {
     const [backgroundType, setBackgroundType] = useState('color');
     const [backgroundColor, setBackgroundColor] = useState('#008080');
     const [backgroundImageUrl, setBackgroundImageUrl] = useState('');
+    const [backgroundBlur, setBackgroundBlur] = useState('5');
     const [uiColor, setUiColor] = useState('#ffffff');
 
     const htmlBody = document.body;
     const colorPicker = document.querySelector('.color-picker');
     const imageUrlInput = document.querySelector('.url-input');
     const navbar = document.querySelector('.navbar');
-    const helpMenu = document.querySelector('help-menu');
+    const helpMenu = document.querySelector('.help-menu');
     const settingsMenu = document.querySelector('.settings-menu');
     const themeMenu = document.querySelector('.theme-menu');
     const menuSubtitle = document.querySelectorAll('.menu-subtitle');
+    const slider = document.querySelector('.slider-input')
     const buttons = document.querySelectorAll('button');
 
     const enableColorPicker = () => {
@@ -67,6 +70,7 @@ const ThemeMenu = ({ displayState }) => {
         setBackgroundColor(event.target.value);
         htmlBody.style.backgroundColor = event.target.value;
         htmlBody.style.backgroundImage = '';
+        slider.style.setProperty('--inpBorderColor', event.target.value)
     }
 
     function handleBackgroundImageChange(event) {
@@ -77,6 +81,10 @@ const ThemeMenu = ({ displayState }) => {
     }
     function handleBackgroundImageUrlChange(event) {
         setBackgroundImageUrl(event.target.value);
+    }
+    function handleBackgroundBlurChange(event) {
+        setBackgroundBlur(event.target.value)
+        htmlBody.style.backdropFilter = `blur(${event.target.value}px)`
     }
     function handleUiColorChange(event) {
         setUiColor(event.target.value);
@@ -93,6 +101,8 @@ const ThemeMenu = ({ displayState }) => {
         buttons.forEach((_, i, arr) => {arr[i].style.borderColor = event.target.value + 'ad'});
         buttons.forEach((_, i, arr) => {arr[i].style.backgroundColor = event.target.value + '70'});
         buttons.forEach((_, i, arr) => {arr[i].style.color = event.target.value});
+
+        slider.style.setProperty('--inpBackgroundColor', event.target.value);
     }
 
     return (
@@ -120,7 +130,8 @@ const ThemeMenu = ({ displayState }) => {
                                 backgroundColor: backgroundType === 'color'
                                     ? backgroundColor
                                     : uiColor + "40",
-                                color: uiColor
+                                color: uiColor,
+                                borderColor: uiColor
                             }}>
                                 {backgroundColor.toUpperCase()}
                             </span>
@@ -152,6 +163,16 @@ const ThemeMenu = ({ displayState }) => {
                         onChange={handleBackgroundImageUrlChange}
                         disabled
                     />
+                    <div className='background-blur-container'>
+                        <span>Background Blur</span>
+                        <input
+                            className='slider-input'
+                            type='range'
+                            min='1'
+                            max='25'
+                            value={backgroundBlur} 
+                            onChange={handleBackgroundBlurChange} />
+                    </div>
                 </div>
             </div>
             <div className='menu-detail'>
@@ -166,7 +187,8 @@ const ThemeMenu = ({ displayState }) => {
                                 backgroundColor: backgroundType === 'color'
                                     ? backgroundColor
                                     : uiColor + "70",
-                                color: uiColor
+                                color: uiColor,
+                                borderColor: uiColor,
                             }}>
                                 {uiColor.toUpperCase()}
                             </span>
