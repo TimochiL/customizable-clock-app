@@ -4,28 +4,40 @@
 import React, { useState, useEffect } from 'react'
 
 const SettingsMenu = ({settingsUpdateToNav, data, displayState}) => {
-    const [clockPosition, setClockPosition] = useState('center')
-    const [timeFormat, setTimeFormat] = useState('12hr')
-    const [showSeconds, setShowSeconds] = useState(true)
-    const [showMeridiem, setShowMeridiem] = useState(true)
+    const [clockPosition, setClockPosition] = useState(getLocalStorageValue('clockPosition','center'));
+    const [timeFormat, setTimeFormat] = useState(getLocalStorageValue('timeFormat','12hr'));
+    const [showSeconds, setShowSeconds] = useState(getLocalStorageValue('showSeconds', 'true') === 'true');
+    const [showMeridiem, setShowMeridiem] = useState(getLocalStorageValue('showMeridiem', 'true') === 'true');
 
-    const handleClockPositionChange = (event) => {
-        setClockPosition(event.target.value); 
+    useEffect(() => {
+        renderTimeFormatChange(timeFormat);
+    }, [])
+
+    function handleClockPositionChange(event) {
+        setClockPosition(event.target.value);
+        localStorage.setItem('clockPosition', event.target.value);
     }
-    const handleTimeFormatChange = (event) => {
-        setTimeFormat(event.target.value)
-        event.target.value === 'military' 
+    function handleTimeFormatChange(event) {
+        setTimeFormat(event.target.value);
+        renderTimeFormatChange(event.target.value);
+        localStorage.setItem('timeFormat', event.target.value);
+    }
+    function renderTimeFormatChange(format) {
+        format === 'military' 
             ? disableElement('.show-seconds-button')
-            : enableElement('.show-seconds-button')
-        event.target.value !== '12hr'
+            : enableElement('.show-seconds-button');
+        format !== '12hr'
             ? disableElement('.show-meridiem-button')
-            : enableElement('.show-meridiem-button')
+            : enableElement('.show-meridiem-button');
     }
-    const handleShowSecondsChange = () => {
-        setShowSeconds(s => !s)
+
+    function handleShowSecondsChange() {
+        setShowSeconds(s => !s);
+        localStorage.setItem('showSeconds', JSON.stringify(!showSeconds));
     }
-    const handleShowMeridiemChange = () => {
-        setShowMeridiem(m => !m)
+    function handleShowMeridiemChange() {
+        setShowMeridiem(m => !m);
+        localStorage.setItem('showMeridiem', JSON.stringify(!showMeridiem));
     }
 
     function disableElement(selector) {
@@ -35,6 +47,11 @@ const SettingsMenu = ({settingsUpdateToNav, data, displayState}) => {
     function enableElement(selector) {
         const element = document.querySelector(selector);
         element.disabled = false;
+    }
+    function getLocalStorageValue(attribute, defaultValue) {
+        return localStorage.getItem(attribute) === null
+            ? defaultValue
+            : localStorage.getItem(attribute);
     }
 
     useEffect(() => {
@@ -46,7 +63,7 @@ const SettingsMenu = ({settingsUpdateToNav, data, displayState}) => {
                 showMeridiem: showMeridiem
             },
         })
-    }, [clockPosition, timeFormat, showSeconds, showMeridiem])
+    }, [clockPosition, timeFormat, showSeconds, showMeridiem]);
 
     return (
         <div className='settings-menu' id={displayState}>

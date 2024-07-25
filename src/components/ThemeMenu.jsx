@@ -1,12 +1,14 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 const ThemeMenu = ({ displayState }) => {
-    const [backgroundType, setBackgroundType] = useState('color');
-    const [backgroundColor, setBackgroundColor] = useState('#008080');
-    const [backgroundImageUrl, setBackgroundImageUrl] = useState('');
-    const [backgroundBlur, setBackgroundBlur] = useState('5');
-    const [uiColor, setUiColor] = useState('#ffffff');
+    const [backgroundType, setBackgroundType] = useState(getLocalStorageValue('backgroundType', 'color'));
+    const [backgroundColor, setBackgroundColor] = useState(getLocalStorageValue('backgroundColor', '#008080'));
+    const [backgroundImageUrl, setBackgroundImageUrl] = useState(getLocalStorageValue('backgroundImageUrl',''));
+    const [backgroundBlur, setBackgroundBlur] = useState(getLocalStorageValue('backgroundBlur','5'));
+    const [uiColor, setUiColor] = useState(getLocalStorageValue('uiColor','#ffffff'));
+    const [clockTextAlpha, setClockTextAlpha] = useState(getLocalStorageValue('clockTextAlpha','255'));
 
     const htmlBody = document.body;
     const colorPicker = document.querySelector('.color-picker');
@@ -16,18 +18,32 @@ const ThemeMenu = ({ displayState }) => {
     const settingsMenu = document.querySelector('.settings-menu');
     const themeMenu = document.querySelector('.theme-menu');
     const menuSubtitle = document.querySelectorAll('.menu-subtitle');
-    const slider = document.querySelector('.slider-input')
+    const sliders = document.querySelectorAll('.slider-input');
     const buttons = document.querySelectorAll('button');
+    const clockText = document.querySelector('.clock-text');
+
+    useEffect(() => {
+        htmlBody.style.backgroundColor = backgroundColor;
+        htmlBody.style.backgroundImage = `url(${backgroundImageUrl})`;
+        htmlBody.style.backdropFilter = `blur(${backgroundBlur}px)`;
+    }, [])
+
+    useEffect(() => {
+        htmlBody.style.color = uiColor;
+        if (navbar !== null)
+            renderUiColorChange(uiColor);
+    }, [navbar])
 
     const enableColorPicker = () => {
         colorPicker.disabled = false;
         imageUrlInput.disabled = true;
+        sliders.forEach((element) => element.style.setProperty('--inpBorderColor', backgroundColor));
         htmlBody.style.backgroundImage = '';
     }
     const enableUrlInput = () => {
         colorPicker.disabled = true;
         imageUrlInput.disabled = false;
-        console.log(backgroundImageUrl)
+        sliders.forEach((element) => element.style.setProperty('--inpBorderColor', uiColor));
         htmlBody.style.backgroundImage = `url(${backgroundImageUrl})`;
     }
 
@@ -36,6 +52,12 @@ const ThemeMenu = ({ displayState }) => {
         const g = (hexNum >> 8) & 255;
         const b = hexNum & 255;
         return [r,g,b];
+    }
+
+    function getLocalStorageValue(attribute, defaultValue) {
+        return localStorage.getItem(attribute) === null
+            ? defaultValue
+            : localStorage.getItem(attribute);
     }
 
     function calculateThemeBackground(hexColor) {
@@ -60,17 +82,19 @@ const ThemeMenu = ({ displayState }) => {
     }
 
     function handleBackgroundTypeChange(event) {
-        setBackgroundType(event.target.value)
+        setBackgroundType(event.target.value);
         event.target.value === 'color'
             ? enableColorPicker()
             : enableUrlInput();
+        localStorage.setItem('backgroundType', event.target.value);
     }
 
     function handleBackgroundColorChange(event) {
         setBackgroundColor(event.target.value);
         htmlBody.style.backgroundColor = event.target.value;
         htmlBody.style.backgroundImage = '';
-        slider.style.setProperty('--inpBorderColor', event.target.value)
+        sliders.forEach((element) => element.style.setProperty('--inpBorderColor', event.target.value));
+        localStorage.setItem('backgroundColor', event.target.value);
     }
 
     function handleBackgroundImageChange(event) {
@@ -78,31 +102,48 @@ const ThemeMenu = ({ displayState }) => {
             setBackgroundImageUrl(event.target.value);
             htmlBody.style.backgroundImage = `url(${event.target.value})`;
         }
+        localStorage.setItem('backgroundImageUrl', event.target.value);
     }
     function handleBackgroundImageUrlChange(event) {
         setBackgroundImageUrl(event.target.value);
     }
     function handleBackgroundBlurChange(event) {
-        setBackgroundBlur(event.target.value)
-        htmlBody.style.backdropFilter = `blur(${event.target.value}px)`
+        setBackgroundBlur(event.target.value);
+        htmlBody.style.backdropFilter = `blur(${event.target.value}px)`;
+        localStorage.setItem('backgroundBlur', event.target.value);
     }
     function handleUiColorChange(event) {
         setUiColor(event.target.value);
-        htmlBody.style.color = event.target.value;
-        navbar.style.borderBottomColor = event.target.value + '70';
-        navbar.style.backgroundColor = event.target.value + '33';
+        renderUiColorChange(event.target.value);
+        localStorage.setItem('uiColor', event.target.value);
+    }
+    function renderUiColorChange(color) {
+        htmlBody.style.color = color;
+        navbar.style.borderBottomColor = color + '70';
+        navbar.style.backgroundColor = color + '33';
+        clockText.style.color = color + (+clockTextAlpha).toString(16)
 
-        const themeBackgroundColor = calculateThemeBackground(event.target.value);
+        const themeBackgroundColor = calculateThemeBackground(color);
 
         settingsMenu.style.backgroundColor = themeMenu.style.backgroundColor = helpMenu.style.backgroundColor = themeBackgroundColor + "dd";
-        settingsMenu.style.borderColor = themeMenu.style.borderColor = helpMenu.style.borderColor = themeBackgroundColor + "70";
+        settingsMenu.style.borderColor = themeMenu.style.borderColor = helpMenu.style.borderColor = color + '70';
+        imageUrlInput.style.borderColor = color + 'cc';
 
-        menuSubtitle.forEach((_, i, arr) => {arr[i].style.borderColor = event.target.value});
-        buttons.forEach((_, i, arr) => {arr[i].style.borderColor = event.target.value + 'ad'});
-        buttons.forEach((_, i, arr) => {arr[i].style.backgroundColor = event.target.value + '70'});
-        buttons.forEach((_, i, arr) => {arr[i].style.color = event.target.value});
+        menuSubtitle.forEach((_, i, arr) => {arr[i].style.borderColor = color});
+        buttons.forEach((_, i, arr) => {arr[i].style.borderColor = color + 'ad'});
+        buttons.forEach((_, i, arr) => {arr[i].style.backgroundColor = color + '70'});
+        buttons.forEach((_, i, arr) => {arr[i].style.color = color});
 
-        slider.style.setProperty('--inpBackgroundColor', event.target.value);
+        backgroundType === 'color'
+            ? enableColorPicker()
+            : enableUrlInput();
+
+        sliders.forEach((element) => element.style.setProperty('--inpBackgroundColor', color));
+    }
+    function handleClockTextAlphaChange(event) {
+        setClockTextAlpha(event.target.value);
+        clockText.style.color = uiColor + (+event.target.value).toString(16);
+        localStorage.setItem('clockTextAlpha', event.target.value);
     }
 
     return (
@@ -143,6 +184,7 @@ const ThemeMenu = ({ displayState }) => {
                                 type='color'
                                 value={backgroundColor}
                                 onChange={handleBackgroundColorChange}
+                                disabled={backgroundType === 'image'}
                             />
                         </div>
                     </div>
@@ -161,7 +203,7 @@ const ThemeMenu = ({ displayState }) => {
                         value={backgroundImageUrl}
                         onKeyDown={handleBackgroundImageChange}
                         onChange={handleBackgroundImageUrlChange}
-                        disabled
+                        disabled={backgroundType === 'color'}
                     />
                     <div className='background-blur-container'>
                         <span>Background Blur</span>
@@ -202,6 +244,16 @@ const ThemeMenu = ({ displayState }) => {
                                 onChange={handleUiColorChange}
                             />
                         </div>
+                    </div>
+                    <div className='text-transparency-container'>
+                        <span>Clock Opacity</span>
+                            <input
+                                className='slider-input'
+                                type='range'
+                                min='70'
+                                max='254'
+                                value={clockTextAlpha} 
+                                onChange={handleClockTextAlphaChange} />
                     </div>
                 </div>
             </div>
